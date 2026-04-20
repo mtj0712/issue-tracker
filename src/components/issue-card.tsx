@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
@@ -39,7 +40,7 @@ function IssueCard({ issue, isOverlay }: IssueCardProps) {
 
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: issue._id,
-    disabled: isOverlay,
+    disabled: isOverlay || !isProjectOwner,
   });
 
   return (
@@ -50,7 +51,9 @@ function IssueCard({ issue, isOverlay }: IssueCardProps) {
       >
         <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
           <CardTitle
-            className="flex-1 cursor-grab text-sm font-medium leading-snug active:cursor-grabbing"
+            className={cn("flex-1 text-sm font-medium leading-snug", {
+              "cursor-grab active:cursor-grabbing": isProjectOwner,
+            })}
             {...listeners}
             {...attributes}
           >
